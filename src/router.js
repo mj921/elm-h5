@@ -14,13 +14,49 @@ export default new Router({
       component: Home
     },
     {
-      path: "/about",
-      name: "about",
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
+      path: "/merchant-detail/:id",
+      name: "merchant-detail",
       component: () =>
-        import(/* webpackChunkName: "about" */ "./views/About.vue")
+        import(
+          /* webpackChunkName: "merchant-detail" */ "./views/MerchantDetail.vue"
+        )
+    },
+    {
+      path: "/dish-order",
+      name: "dish-order",
+      component: () =>
+        import(
+          /* webpackChunkName: "merchant-detail" */ "./views/DishOrder.vue"
+        )
+    },
+    {
+      path: "/userinfo",
+      name: "userinfo",
+      component: () =>
+        import(/* webpackChunkName: "userinfo" */ "./views/Userinfo.vue")
+    },
+    {
+      path: "/register",
+      name: "register",
+      component: () =>
+        import(/* webpackChunkName: "register" */ "./views/Register.vue")
+    },
+    {
+      path: "/login",
+      name: "login",
+      component: () =>
+        import(/* webpackChunkName: "login" */ "./views/Login.vue")
+    },
+    {
+      path: "/404",
+      name: "404",
+      props: { type: "404" },
+      component: () =>
+        import(/* webpackChunkName: "errorPage" */ "./views/ErrorPage.vue")
+    },
+    {
+      path: "*",
+      redirect: "/404"
     }
   ]
 });
