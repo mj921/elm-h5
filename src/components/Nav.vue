@@ -1,6 +1,6 @@
 <template>
   <div class="elm-nav">
-    <dl :class="{ current: currIndex === 0 }">
+    <dl :class="{ current: currIndex === 0 }" @click="$router.push('/')">
       <elm-icon type="elm" />
       <p>外卖</p>
     </dl>
@@ -30,7 +30,7 @@ export default {
   methods: {
     myClick() {
       if (localStorage.getItem("token")) {
-        this.$router.push("/userinfo");
+        this.$router.push("/my-account");
       } else {
         this.$router.push("/login");
       }
@@ -53,11 +53,15 @@ export default {
     width: 2.5rem;
     text-align: center;
     font-size: 0.24rem;
-    &.current {
-      color: @Blue;
-    }
     .elm-icon {
       font-size: 0.44rem;
+      color: @SecondaryText;
+    }
+    &.current {
+      color: @Blue;
+      .elm-icon {
+        color: @Blue;
+      }
     }
     p {
       line-height: 0.48rem;

@@ -17,3 +17,10 @@ export const loginApi = function(data = {}) {
     data
   });
 };
+export const getUserinfoApi = function() {
+  return request({
+    url: `${baseApi}/userinfo`,
+    method: "get",
+    data: {}
+  });
+};

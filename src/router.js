@@ -30,10 +30,10 @@ export default new Router({
         )
     },
     {
-      path: "/userinfo",
-      name: "userinfo",
+      path: "/my-account",
+      name: "my-account",
       component: () =>
-        import(/* webpackChunkName: "userinfo" */ "./views/Userinfo.vue")
+        import(/* webpackChunkName: "my-account" */ "./views/MyAccount.vue")
     },
     {
       path: "/register",
