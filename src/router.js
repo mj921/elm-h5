@@ -36,6 +36,30 @@ export default new Router({
         import(/* webpackChunkName: "my-account" */ "./views/MyAccount.vue")
     },
     {
+      path: "/address/list",
+      name: "address-list",
+      component: () =>
+        import(
+          /* webpackChunkName: "address-list" */ "./views/address/AddressList.vue"
+        )
+    },
+    {
+      path: "/address/add",
+      name: "address-add",
+      component: () =>
+        import(
+          /* webpackChunkName: "address-add" */ "./views/address/AddAddress.vue"
+        )
+    },
+    {
+      path: "/address/position-select",
+      name: "position-select",
+      component: () =>
+        import(
+          /* webpackChunkName: "position-select" */ "./views/PositionSelect.vue"
+        )
+    },
+    {
       path: "/register",
       name: "register",
       component: () =>

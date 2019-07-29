@@ -18,10 +18,6 @@ const request = (option, { repeatSubmitValidate = false } = {}) => {
     option.method = option.method || "post";
     option.url = BaseUrl + option.url;
     let repeatCommitFlag = false; // 是否重复提交
-    if (option.data.currentPage) {
-      option.data = { ...option.data };
-      option.data.currentPage--;
-    }
     if (option.method.toLowerCase() === "get") {
       option.params = Object.assign({}, option.data);
       delete option.data;

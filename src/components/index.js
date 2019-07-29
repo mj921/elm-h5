@@ -4,6 +4,7 @@ import ElmIcon from "./Icon";
 import ElmScrollView from "./ScrollView";
 import ElmDot from "./Dot";
 import ElmSelect from "./Select";
+import ElmSwipeCell from "./SwipeCell";
 
 export default function(Vue) {
   Vue.component(ElmHeader.name, ElmHeader);
@@ -12,4 +13,5 @@ export default function(Vue) {
   Vue.component(ElmScrollView.name, ElmScrollView);
   Vue.component(ElmDot.name, ElmDot);
   Vue.component(ElmSelect.name, ElmSelect);
+  Vue.component(ElmSwipeCell.name, ElmSwipeCell);
 }

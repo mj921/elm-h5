@@ -61,6 +61,7 @@ export default {
   position: relative;
   height: 0.9rem;
   line-height: 0.9rem;
+  font-size: 0.3rem;
   .left {
     position: absolute;
     left: 0.4rem;

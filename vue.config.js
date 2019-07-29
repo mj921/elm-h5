@@ -16,6 +16,11 @@ module.exports = {
       })
       .end();
   },
+  configureWebpack: {
+    externals: {
+      AMap: "AMap" // 配置使用CDN
+    }
+  },
   devServer: {
     port: 8088
   }
