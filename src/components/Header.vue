@@ -37,7 +37,8 @@ export default {
     backUrl: {
       type: String,
       default: ""
-    }
+    },
+    backFun: Function
   },
   data() {
     return {
@@ -46,7 +47,9 @@ export default {
   },
   methods: {
     back() {
-      if (this.backUrl) {
+      if (this.backFun) {
+        this.backFun();
+      } else if (this.backUrl) {
         this.$router.push(this.backUrl);
       } else {
         this.$router.go(-1);

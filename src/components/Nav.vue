@@ -4,7 +4,10 @@
       <elm-icon type="elm" />
       <p>外卖</p>
     </dl>
-    <dl :class="{ current: currIndex === 1 }">
+    <dl
+      :class="{ current: currIndex === 1 }"
+      @click="$router.push('/order/list')"
+    >
       <elm-icon type="order" />
       <p>订单</p>
     </dl>

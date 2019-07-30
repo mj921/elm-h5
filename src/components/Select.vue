@@ -168,6 +168,7 @@ export default {
     .options-list {
       padding: @BaseSize 0;
       max-height: 5rem;
+      overflow: auto;
       dl {
         line-height: 1rem;
         color: @Title;

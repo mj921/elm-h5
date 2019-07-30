@@ -16,7 +16,7 @@
         <elm-icon type="right" />
       </div>
     </dl>
-    <dl class="account-item clearfloat">
+    <dl class="account-item clearfloat" @click="$router.push('/address/list')">
       <label for="">我的地址</label>
       <div class="right">
         <elm-icon type="right" />

@@ -3,11 +3,7 @@
     <img class="bg-logo" :src="merchantInfo.logo" alt="logo" />
     <elm-scroll-view :topHeight="0.9" :bottomHeight="1">
       <template v-slot:top>
-        <elm-header
-          bgColor="transparent"
-          :textColor="ColorConfig.Title"
-          backUrl="/"
-        />
+        <elm-header bgColor="transparent" :textColor="ColorConfig.Title" />
       </template>
       <div class="merchant-info">
         <img class="logo" :src="merchantInfo.logo" alt="logo" />

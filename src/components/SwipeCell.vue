@@ -41,9 +41,15 @@ export default {
   },
   methods: {
     touchStart(e) {
+      if (this.status !== "center") {
+        e.stopPropagation();
+      }
       this.x = e.changedTouches[0].clientX;
     },
     touchMove(e) {
+      if (this.status !== "center") {
+        e.stopPropagation();
+      }
       let moveX = (e.changedTouches[0].clientX - this.x) / 100 / this.p;
       switch (this.status) {
         case "center":
@@ -66,56 +72,75 @@ export default {
               moveX = moveX - this.rightWidth;
             }
           } else if (moveX < 0) {
-            moveX = this.rightWidth;
+            moveX = -this.rightWidth;
           }
           break;
         case "left":
           if (moveX < 0) {
             if (-moveX > this.leftWidth + this.rightWidth) {
-              moveX = this.rightWidth;
+              moveX = -this.rightWidth;
             } else {
               moveX = this.leftWidth - moveX;
             }
           } else if (moveX > 0) {
-            moveX = this.rightWidth;
+            moveX = this.leftWidth;
           }
+          break;
       }
       this.moveX = moveX;
     },
     touchEnd(e) {
+      if (this.status !== "center") {
+        e.stopPropagation();
+      }
       let moveX = (e.changedTouches[0].clientX - this.x) / 100 / this.p;
       switch (this.status) {
         case "center":
           if (moveX > 0) {
             moveX = this.leftWidth;
+            this.status = "left";
           }
           if (moveX < 0) {
             moveX = -this.rightWidth;
+            this.status = "right";
           }
           break;
         case "right":
           if (moveX > 0) {
             if (moveX > this.rightWidth) {
               moveX = this.leftWidth;
+              this.status = "left";
             } else {
               moveX = 0;
+              this.status = "center";
             }
           } else if (moveX < 0) {
-            moveX = this.rightWidth;
+            moveX = -this.rightWidth;
+          } else {
+            moveX = this.moveX;
           }
           break;
         case "left":
           if (moveX < 0) {
             if (-moveX > this.leftWidth) {
-              moveX = this.rightWidth;
+              moveX = -this.rightWidth;
+              this.status = "right";
             } else {
               moveX = 0;
+              this.status = "center";
             }
           } else if (moveX > 0) {
-            moveX = this.rightWidth;
+            moveX = this.leftWidth;
+          } else {
+            moveX = this.moveX;
           }
+          break;
       }
       this.moveX = moveX;
+    },
+    windowTouch() {
+      this.status = "center";
+      this.moveX = 0;
     }
   },
   mounted() {
@@ -128,14 +153,13 @@ export default {
     this.$el.addEventListener("touchstart", this.touchStart);
     this.$el.addEventListener("touchmove", this.touchMove);
     this.$el.addEventListener("touchend", this.touchEnd);
-    this.$el.addEventListener("focus", e => {
-      console.log(e);
-    });
+    window.addEventListener("touchstart", this.windowTouch);
   },
   beforeDestroy() {
     this.$el.removeEventListener("touchstart", this.touchStart);
     this.$el.removeEventListener("touchmove", this.touchMove);
     this.$el.removeEventListener("touchend", this.touchEnd);
+    window.removeEventListener("touchstart", this.windowTouch);
   }
 };
 </script>

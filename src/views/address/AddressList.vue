@@ -1,6 +1,6 @@
 <template>
   <div class="elm-address-list">
-    <elm-header title="收货地址">
+    <elm-header :title="title">
       <template v-slot:right>
         <span @click="$router.push('/address/add')">新增地址</span>
       </template>
@@ -11,7 +11,7 @@
         :right-width="1.5"
         :key="address.id"
       >
-        <dl>
+        <dl @click="selectAddress(address)">
           <dt>{{ address.position }}</dt>
           <div class="address-info">{{ address.address }}</div>
           <div class="user-info">
@@ -29,17 +29,37 @@
 
 <script>
 import { getAddressListApi } from "../../apis/addressApi";
+import { mapMutations } from "vuex";
 export default {
+  props: {
+    type: {
+      type: String,
+      default: "list"
+    },
+    title: {
+      type: String,
+      default: "收货地址"
+    }
+  },
   data() {
     return {
       addressList: []
     };
   },
   methods: {
+    ...mapMutations("order", {
+      updateAddress: "UPDATE_ADDRESS"
+    }),
     getAddressList() {
       getAddressListApi().then(res => {
         this.addressList = res.data;
       });
+    },
+    selectAddress(address) {
+      if (this.type !== "list") {
+        this.updateAddress(address);
+        this.$router.push("/dish-order");
+      }
     }
   },
   created() {

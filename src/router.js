@@ -30,6 +30,24 @@ export default new Router({
         )
     },
     {
+      path: "/order/remark",
+      name: "order-remark",
+      component: () =>
+        import(/* webpackChunkName: "order-remark" */ "./views/OrderRemark.vue")
+    },
+    {
+      path: "/order/list",
+      name: "order-list",
+      component: () =>
+        import(/* webpackChunkName: "order-list" */ "./views/OrderList.vue")
+    },
+    {
+      path: "/order/detail/:id",
+      name: "order-detail",
+      component: () =>
+        import(/* webpackChunkName: "order-detail" */ "./views/OrderDetail.vue")
+    },
+    {
       path: "/my-account",
       name: "my-account",
       component: () =>
@@ -38,6 +56,18 @@ export default new Router({
     {
       path: "/address/list",
       name: "address-list",
+      component: () =>
+        import(
+          /* webpackChunkName: "address-list" */ "./views/address/AddressList.vue"
+        )
+    },
+    {
+      path: "/address/select",
+      name: "address-select",
+      props: {
+        type: "select",
+        title: "选择收货地址"
+      },
       component: () =>
         import(
           /* webpackChunkName: "address-list" */ "./views/address/AddressList.vue"

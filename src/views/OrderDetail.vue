@@ -1,24 +1,14 @@
 <template>
-  <elm-scroll-view :topHeight="0.9" :bottomHeight="1" class="elm-dish-order">
+  <elm-scroll-view :topHeight="0.9" class="elm-dish-order">
     <template v-slot:top>
-      <elm-header :backUrl="`/merchant-detail/${order.merchant.id}`" />
+      <elm-header backUrl="/order/list" />
     </template>
     <div class="bg"></div>
     <div class="order-content">
       <div class="order-address">
         <dl class="address-info" @click="$router.push('/address/select')">
-          <template v-if="order.address && order.address.id">
-            <dt>{{ order.address.position }} {{ order.address.address }}</dt>
-            <p>{{ order.address.username }} {{ order.address.phone }}</p>
-          </template>
-          <span v-else>选择收货地址</span><elm-icon type="right" />
-        </dl>
-        <dl>
-          <elm-select
-            v-model="payType"
-            label="支付方式"
-            :options="['支付宝', '微信']"
-          />
+          <dt>{{ order.address }}</dt>
+          <p>{{ order.username }} {{ order.phone }}</p>
         </dl>
       </div>
       <div class="order-dishs">
@@ -42,94 +32,26 @@
         >
           <label for="">订单备注</label>
           <div class="right">
-            <span class="remark-item-value">{{
-              order.remark || "口味、偏好"
-            }}</span>
+            <span class="remark-item-value">
+              {{ order.remark }}
+            </span>
             <elm-icon type="right" />
           </div>
         </dl>
-        <dl>
-          <elm-select
-            v-model="tablewareNum"
-            label="餐具数量"
-            :options="tablewareList"
-          />
-        </dl>
       </div>
     </div>
-    <template v-slot:bottom>
-      <div class="order-bottom">
-        ￥{{ totalPrice }}
-        <button @click="confirmPay">确认支付</button>
-      </div>
-    </template>
   </elm-scroll-view>
 </template>
 
 <script>
-import { mapState, mapMutations } from "vuex";
-import { addOrderApi } from "../apis/orderApi";
+import { getOrderApi } from "../apis/orderApi";
 export default {
   data() {
-    const payType = this.$store.state.order.order.payType || "支付宝";
-    const tablewareNum = this.$store.state.order.order.tablewareNum || 0;
     return {
-      payType,
-      tablewareNum,
-      tablewareList: [
-        {
-          label: "无需餐具",
-          value: 0
-        },
-        {
-          label: "1份",
-          value: 1
-        },
-        {
-          label: "2份",
-          value: 2
-        },
-        {
-          label: "3份",
-          value: 3
-        },
-        {
-          label: "4份",
-          value: 4
-        },
-        {
-          label: "5份",
-          value: 5
-        },
-        {
-          label: "6份",
-          value: 6
-        },
-        {
-          label: "7份",
-          value: 7
-        },
-        {
-          label: "8份",
-          value: 8
-        },
-        {
-          label: "9份",
-          value: 9
-        },
-        {
-          label: "10份",
-          value: 10
-        },
-        {
-          label: "10份以上",
-          value: 99
-        }
-      ]
+      order: {}
     };
   },
   computed: {
-    ...mapState("order", ["order"]),
     totalPrice() {
       let sum = 0;
       this.order &&
@@ -141,37 +63,14 @@ export default {
     }
   },
   methods: {
-    ...mapMutations("order", {
-      updateOrder: "UPDATE_ORDER"
-    }),
-    confirmPay() {
-      addOrderApi({
-        merchantId: this.order.merchant.id,
-        addressId: this.order.address.id,
-        address: this.order.address.position + this.order.address.address,
-        username: this.order.address.username,
-        phone: this.order.address.phone,
-        dishs: this.order.dishs,
-        price: this.totalPrice,
-        remark: this.order.remark,
-        payType: this.payType,
-        tablewareNum: this.tablewareNum
-      }).then(() => {
-        this.$message("下单成功");
+    getOrderInfo() {
+      getOrderApi(this.$route.params.id).then(res => {
+        this.order = res.data;
       });
     }
   },
   created() {
-    if (!this.order || !this.order.merchant || !this.order.merchant.id) {
-      this.$router.push("/");
-    }
-  },
-  beforeRouteLeave(to, from, next) {
-    this.updateOrder({
-      payType: this.payType,
-      tablewareNum: this.tablewareNum
-    });
-    next();
+    this.getOrderInfo();
   }
 };
 </script>

@@ -5,6 +5,12 @@
 </template>
 <script>
 export default {
+  mounted() {
+    window.addEventListener("touchmove", e => {
+      e.defaultPrevented();
+      e.stopPropagation();
+    });
+  },
   created() {
     var getScale = function() {
       var screenWidth =
