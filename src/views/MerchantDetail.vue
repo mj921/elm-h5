@@ -8,7 +8,7 @@
       <div class="merchant-info">
         <img class="logo" :src="merchantInfo.logo" alt="logo" />
         <dt>{{ merchantInfo.name }}</dt>
-        <div class="merchant-evaluate">
+        <!-- <div class="merchant-evaluate">
           评分{{
             merchantInfo.score === "" ? "暂无评分" : merchantInfo.score
           }}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;月售{{
@@ -16,21 +16,21 @@
           }}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;商家配送约{{
             merchantInfo.distributionTime
           }}分钟
-        </div>
+        </div> -->
       </div>
       <div class="merchant-tabs">
         <dl :class="{ 'curr-tab': tabIndex === 0 }" @click="tabChange(0)">
           点餐
         </dl>
-        <dl :class="{ 'curr-tab': tabIndex === 1 }" @click="tabChange(1)">
+        <!-- <dl :class="{ 'curr-tab': tabIndex === 1 }" @click="tabChange(1)">
           评价
-        </dl>
-        <dl :class="{ 'curr-tab': tabIndex === 2 }" @click="tabChange(2)">
-          商家
+        </dl> -->
+        <dl :class="{ 'curr-tab': tabIndex === 1 }" @click="tabChange(1)">
+          预定/选择餐桌
         </dl>
         <div
           class="curr-line"
-          :style="{ left: 2.5 * tabIndex + 0.95 + 'rem' }"
+          :style="{ left: 3.75 * tabIndex + 1.575 + 'rem' }"
         ></div>
       </div>
       <div class="tab-panels">
@@ -75,18 +75,31 @@
             </template>
           </div>
         </div>
+        <div class="table-list" v-show="tabIndex === 1">
+          <dl
+            v-for="item in tableList"
+            :key="item.no + 'table'"
+            :class="{ disabled: item.status === 1, curr: item.no === 2 }"
+          >
+            <p>{{ item.no }}号桌</p>
+            <p>{{ item.type | typeStr }}</p>
+            <p>{{ (item.type + 1) * 4 }}人</p>
+          </dl>
+        </div>
       </div>
       <template v-slot:bottom>
         <div class="merchant-bottom">
-          <elm-dot
-            class="shop-car"
-            :class="{ 'shop-car-fill': shopCar.length > 0 }"
-            :num="totalNum"
-          >
-            <elm-icon type="waimai" />
-          </elm-dot>
-          <span>{{ totalPrice > 0 ? `￥${totalPrice}` : "" }}</span>
-          <button
+          <template v-show="tabIndex === 0">
+            <elm-dot
+              class="shop-car"
+              :class="{ 'shop-car-fill': shopCar.length > 0 }"
+              :num="totalNum"
+            >
+              <elm-icon v-show="tabIndex === 0" type="shopcar" />
+            </elm-dot>
+            <span>{{ totalPrice > 0 ? `￥${totalPrice}` : "" }}</span>
+          </template>
+          <!-- <button
             :class="{
               'can-click': totalPrice >= merchantInfo.startDistributionFee
             }"
@@ -97,6 +110,14 @@
                 ? "去下单"
                 : `￥${merchantInfo.startDistributionFee}起送`
             }}
+          </button> -->
+          <button
+            :class="{
+              'can-click': true
+            }"
+            @click="addOrder"
+          >
+            {{ tabIndex === 0 ? "去下单" : "确定" }}
           </button>
         </div>
       </template>
@@ -118,7 +139,8 @@ export default {
       types: [],
       currType: "",
       dishList: [],
-      shopCar: []
+      shopCar: [],
+      tableList: []
     };
   },
   methods: {
@@ -197,6 +219,39 @@ export default {
   created() {
     this.getMerchantInfo();
     this.getTypes();
+    for (let i = 0; i < 21; i++) {
+      if (i < 9) {
+        this.tableList.push({
+          no: i + 1,
+          type: 0,
+          status: i === 3 || i === 4 || i === 6 ? 1 : 0
+        });
+      } else if (i < 14) {
+        this.tableList.push({
+          no: i + 1,
+          type: 1,
+          status: Math.floor(Math.random() * 2)
+        });
+      } else {
+        this.tableList.push({
+          no: i + 1,
+          type: 2,
+          status: Math.floor(Math.random() * 2)
+        });
+      }
+    }
+  },
+  filters: {
+    typeStr(v) {
+      switch (v) {
+        case 0:
+          return "小桌";
+        case 1:
+          return "中桌";
+        case 2:
+          return "大桌";
+      }
+    }
   }
 };
 </script>
@@ -248,7 +303,7 @@ export default {
     height: 0.26rem;
     background-color: @White;
     dl {
-      width: 2.5rem;
+      width: 50%;
       float: left;
       text-align: center;
       &.curr-tab {
@@ -267,6 +322,7 @@ export default {
   }
   .tab-panels {
     height: calc(100% - 2.56rem);
+    background-color: @White;
     .dish-list {
       height: 100%;
       .dish-types {
@@ -341,6 +397,31 @@ export default {
               }
             }
           }
+        }
+      }
+    }
+    .table-list {
+      overflow: hidden;
+      dl {
+        float: left;
+        margin: 0.5rem;
+        width: 1.5rem;
+        height: 1.5rem;
+        font-size: 0.28rem;
+        text-align: center;
+        box-sizing: border-box;
+        border-radius: 0.1rem;
+        border: 1px solid #999;
+        &.disabled {
+          border-color: @Disable;
+          color: @Disable;
+        }
+        &.curr {
+          border-color: @Blue;
+          color: @Blue;
+        }
+        p {
+          line-height: 0.45rem;
         }
       }
     }

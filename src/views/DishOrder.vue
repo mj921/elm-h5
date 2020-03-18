@@ -6,13 +6,13 @@
     <div class="bg"></div>
     <div class="order-content">
       <div class="order-address">
-        <dl class="address-info" @click="$router.push('/address/select')">
+        <!-- <dl class="address-info" @click="$router.push('/address/select')">
           <template v-if="order.address && order.address.id">
             <dt>{{ order.address.position }} {{ order.address.address }}</dt>
             <p>{{ order.address.username }} {{ order.address.phone }}</p>
           </template>
           <span v-else>选择收货地址</span><elm-icon type="right" />
-        </dl>
+        </dl> -->
         <dl>
           <elm-select
             v-model="payType"
@@ -48,13 +48,13 @@
             <elm-icon type="right" />
           </div>
         </dl>
-        <dl>
+        <!-- <dl>
           <elm-select
             v-model="tablewareNum"
             label="餐具数量"
             :options="tablewareList"
           />
-        </dl>
+        </dl> -->
       </div>
     </div>
     <template v-slot:bottom>
@@ -298,7 +298,7 @@ export default {
       padding: 0.3rem 0;
       font-size: 0.28rem;
       line-height: 0.4rem;
-      border-bottom: 1px solid @Border;
+      // border-bottom: 1px solid @Border;
       overflow: hidden;
       label {
         float: left;
